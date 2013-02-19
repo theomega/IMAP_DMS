@@ -70,7 +70,7 @@ def addDocument(M, conf, document):
 
   #Read Title
   readline.parse_and_bind("tab: None")
-  title = raw_input('Enter Title: ')
+  title = unicode(raw_input('Enter Title: '), sys.stdin.encoding)
   title = title.strip()
   logging.debug("Got title '%s' from user", title)
 
@@ -81,7 +81,7 @@ def addDocument(M, conf, document):
   #Read Tags
   readline.parse_and_bind("tab: complete")
   readline.set_completer(tools.getCompleter(tags))
-  tags = raw_input('Enter Tags: ')
+  tags = unicode(raw_input('Enter Tags: '), sys.stdin.encoding)
   tags = tags.strip()
   logging.debug("Got tags '%s' from user", tags)
 
