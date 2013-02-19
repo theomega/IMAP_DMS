@@ -72,7 +72,7 @@ def handle_part(conf, msg, part, tags):
 
 
 def usage(name):
-  print("IMAP-DMS Version %s" % (__version__))
+  print("IMAP-DMS Version %s" % (tools.__version__))
   print("")
   print("Usage: %s [configuration file]" % name)
   print("""

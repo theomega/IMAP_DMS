@@ -4,6 +4,8 @@
 from ConfigParser import SafeConfigParser
 import os
 
+__version__ = '0.0.1'
+
 class DMSConfigParser(SafeConfigParser):
   def get(self, section, option):
     """ Get a parameter if the returning value is a list, convert string value
