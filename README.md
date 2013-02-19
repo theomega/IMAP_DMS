@@ -1,7 +1,7 @@
 The Problem / The Motivation
 ===========================
 
-When searching for Document Managment Systems (DMS) you can find a large amount
+When searching for Document Management Systems (DMS) you can find a large amount
 of commercial and open source projects. Each of them has its unique feature set,
 but all of them missed some features I required and most of them where much to
 heavy.
@@ -19,7 +19,7 @@ What I needed was:
      'tax' or more 'invoices'. A system consisting of tags is much better suited
      here.
 
-This project presents a unique approach which fullfills all the requirements
+This project presents a unique approach which fulfils all the requirements
 specified above. 
 
 The Idea
@@ -30,7 +30,7 @@ documents: An IMAP Server already provides the storage of ''objects'' (in this
 case documents) and a sophisticated searching. Many tool exists that can be used
 to backup an IMAP account. By using this approach, existing IMAP accounts and
 servers can be reused to store the documents. The access to the documents can be
-done using ordinary IMAP clients like Mozilla Thunderbird or webclients like
+done using ordinary IMAP clients like Mozilla Thunderbird or web clients like
 Roundcube. They all support searching for documents and downloading/viewing
 them.
 
@@ -38,8 +38,8 @@ Files can be added to the IMAP Document Storage easily by using emails. The
 documents are their attachments, so an single email can contain multiple
 documents. As the subject can be searched easily, this can be seen as the
 identifier for the document(s). Tags can either be done using IMAP keywords (the
-flags of thunderbird) or by simply adding tags like `[invoice]` to the subject.
-As you can search only in the subject in most email programms, you can search
+flags of Thunderbird) or by simply adding tags like `[invoice]` to the subject.
+As you can search only in the subject in most email programs, you can search
 for tags very easily.
 
 The only missing part is the creation of the full text which can be searched by
@@ -51,7 +51,7 @@ The Project
 
 This script reads an IMAP mailbox (aka an IMAP folder) and search for all mails
 which it has not processed already. For each of the mails, it takes each of its
-attachment which is not already plain text and turns them into plaintext. The
+attachment which is not already plain text and turns them into plain text. The
 original attachment is left unchanged and a new attachment containing the plain
 text is added.
 
@@ -75,8 +75,8 @@ Installation
 ===========
 
 The most recent version is checked in at the [git-repository][gitrepo]. It uses
-[git submodules][gitsubmodules] to include external libraries. For this reason
-you must download these submodules after you have downloaded this repository.
+[git sub modules][gitsubmodules] to include external libraries. For this reason
+you must download these sub modules after you have downloaded this repository.
 
     git clone https://github.com/theomega/IMAP_DMS.git
     cd IMAP_DMS
@@ -85,6 +85,35 @@ you must download these submodules after you have downloaded this repository.
 
    [gitrepo]: https://github.com/theomega/IMAP_DMS
    [gitsubmodules]: http://git-scm.com/book/en/Git-Tools-Submodules
+
+Usage
+=====
+
+   1. Create a configuration file: Have a look at the example
+      `imap_dms.cfg.example`. You can find the available configuration options
+      in the `imap_dms.defaults` file. Do not modify the defaults file but
+      instead overwrite the setting which you need in the configuration.
+   2. Run `processMails.py [configurationfile]` from the command line to see if
+      everything works as expected
+   3. Add a cronjob which runs `processMails.py` periodically.
+
+
+Features
+========
+
+   - You can modify the behaviour of the script for each message individually by
+     using different receivers. If for example `docs@domain.tld` gets delivered
+     to the `check_folder` from the configuration, the script OCRs each
+     attachment. If you instead write an email to `docs+noocr@domain.tld`, the
+     message still gets delivered to the same folder, but the script does not do
+     any OCR but instead only extracts the text from PDFs.
+   - Tesseract, the OCR Engine used by this script can not auto detect the
+     language which should be used. For this reason, there is a default language
+     in the configuration. If you need to index a single document in a different
+     language, simply send the email to `docs+languagecode@domain.tld`. For
+     example for a french document use `docs+fra@domain.tld`. The language codes
+     are those of the ISO 639-2 standard.
+
 
 External Libraries
 ==================
@@ -97,7 +126,7 @@ MIT licence.
    [shrepo]: https://github.com/amoffat/sh
    [amoffat]: https://github.com/amoffat
 
-ToDo / Open Questions
+To Do / Open Questions
 ====================
 
    - Running the script as a cron job is not an ideal solution. Perhaps using a
