@@ -2,17 +2,34 @@
 # You can override any setting in your own configuration file!
 
 [Folders]
+#The IMAP Folder which is checked for the messages
 check_folder = INBOX
+#The IMAP Folder where the processed messages are saved to
 save_folder = INBOX
+
+#The IMAP Folder where the unmodified messages are kept as backup. This can be
+#empty. In this case no backups are kept and the original messages are deleted.
 original_folder = Originals
 
 [Options]
+#MIME Types which should not be processed
 skip_contenttypes = ['text/plain']
+#Filenames of the attachments which should not be processed
 skip_filenames = ['signature.asc']
 
+#The name of the header which is used to mark mails which have already be
+#processed. This should not be changed after a first mail has been processed,
+#otherwise mails get processed twice.
 header = IMAP_DMS
+
+#The IMAP Flags (see the RFC) which should be set on the processed messages.
+#Removing the '\\Seen' here makes the messages marked 'new'.
 flags = ['\\Seen']
 
+#The default OCR language
 default_language = deu
+
+#All available languages, must be lowercase and must include the
+#default_language
 available_languages = ['deu', 'eng', 'fra']
 
