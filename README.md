@@ -97,6 +97,9 @@ Usage
       everything works as expected
    3. Add a cronjob which runs `processMails.py` periodically.
 
+The script can either run on your client machine or if possible directly on the
+mail server. The later should be preferred as the documents do not have to be
+downloaded to the client and later uploaded again.
 
 Features
 ========
@@ -129,6 +132,10 @@ MIT licence.
 To Do / Open Questions
 ====================
 
+   - A script which adds pages from a scanner or a PDF directly (either by
+     sending an email to the account or by directly appending to the IMAP
+     folder) should be written. This script can help with the correct selection
+     of the title, time stamp and tags.
    - Running the script as a cron job is not an ideal solution. Perhaps using a
      `procmail` script can be used here to synchronously handle incoming
      messages.
