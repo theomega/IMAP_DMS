@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*- 
 # vim:tw=80:ts=2:sw=2:colorcolumn=81:nosmartindent
 
-__version__ = '0.1'
-
 import logging, sys, os, os.path, imaplib, email, email.mime
 import email.mime.nonmultipart, email.charset, platform
 
@@ -29,8 +27,6 @@ def handle_part(conf, msg, part, tags):
   logging.debug('Found part filename=%s, type=%s', part.get_filename(),
       part.get_content_type())
  
-  logging.debug('Skip filenames are %s', type(conf.get('Options',
-    'skip_filenames')))
   if(part.get_filename() in conf.get('Options', 'skip_filenames')):
     logging.debug("Skipping because filename is on skiplist")
     return
