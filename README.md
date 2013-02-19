@@ -99,13 +99,13 @@ MIT licence.
 ToDo / Open Questions
 ====================
 
-    - Running the script as a cron job is not an ideal solution. Perhaps using a
-      `procmail` script can be used here to synchronously handle incoming
-      messages.
-    - The script has not been tested on gmail. As Google provides nearly
-      unlimited space, it could serve as an ideal place for document storage (if
-      you have no privacy concerns).
-    - The script is not tested very well, I could destroy everything....
-    - It is not clear how portable the script is in terms of python versions and
-      application versions.
-    - Check if other OCR tools would be better suitable for this job.
+   - Running the script as a cron job is not an ideal solution. Perhaps using a
+     `procmail` script can be used here to synchronously handle incoming
+     messages.
+   - The script has not been tested on gmail. As Google provides nearly
+     unlimited space, it could serve as an ideal place for document storage (if
+     you have no privacy concerns).
+   - The script is not tested very well, I could destroy everything....
+   - It is not clear how portable the script is in terms of python versions and
+     application versions.
+   - Check if other OCR tools would be better suitable for this job.
