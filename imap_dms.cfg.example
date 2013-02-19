@@ -1,0 +1,7 @@
+[Server]
+host = localhost
+user = user
+password = password
+usessl = False
+
+

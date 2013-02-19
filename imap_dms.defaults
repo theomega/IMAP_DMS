@@ -1,0 +1,18 @@
+# Do not modify this file, it contains the defaults.
+# You can override any setting in your own configuration file!
+
+[Folders]
+check_folder = INBOX
+save_folder = INBOX
+original_folder = Originals
+
+[Options]
+skip_contenttypes = ['text/plain']
+skip_filenames = ['signature.asc']
+
+header = IMAP_DMS
+flags = ['\\Seen']
+
+default_language = deu
+available_languages = ['deu', 'eng', 'fra']
+
