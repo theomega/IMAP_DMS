@@ -1,3 +1,4 @@
 [submodule "sh"]
 	path = sh
 	url = git://github.com/amoffat/sh.git
+    ignore = dirty
