@@ -79,6 +79,7 @@ The most recent version is checked in at the [git-repository][gitrepo]. It uses
 you must download these submodules after you have downloaded this repository.
 
     git clone https://github.com/theomega/IMAP_DMS.git
+    cd IMAP_DMS
     git submodule init
     git submodule update
 
