@@ -19,10 +19,6 @@ content_processors={
 defaultConfigFile=tools.getDefaultPath('imap_dms.defaults')
 logging.basicConfig(level=logging.DEBUG)
 
-#Set up the default charset for encoding the ocred text
-utf8qp=email.charset.Charset('utf-8')
-utf8qp.body_encoding=email.charset.QP
-
 def handle_part(conf, msg, part, tags):
   logging.debug('Found part filename=%s, type=%s', part.get_filename(),
       part.get_content_type())
@@ -60,10 +56,9 @@ def handle_part(conf, msg, part, tags):
     if newcontent is not None:
       logging.debug("Recieved %d chars, saving to mail", len(newcontent))
 
-      newpart=email.mime.nonmultipart.MIMENonMultipart('text', 'plain',
-          charset='utf-8')
-      newpart.set_payload(newcontent, charset=utf8qp)      
-      newpart.add_header('Content-Disposition', 'attachment', filename=newname)
+      newpart=tools.MIMEUTF8QPText(newcontent)      
+      newpart.add_header('Content-Disposition', 'attachment', filename=('utf-8',
+        '', newname.encode('utf-8')))
       msg.attach(newpart)
     else:
       logging.error("Could not recognize any text for this attachment")

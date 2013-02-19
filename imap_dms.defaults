@@ -33,3 +33,15 @@ default_language = deu
 #default_language
 available_languages = ['deu', 'eng', 'fra']
 
+[Client]
+#File where the tags which are used on the server are cached locally
+tags_file = ~/.cache/imap_dms.tags
+
+#Date format for import
+date_format = %d.%m.%Y
+
+#Sender of the client Mails (does technically not play a role, simply a header)
+sender = 
+
+#Receiver of the client mails (does technically not play a role, simply a header)
+receiver = 
