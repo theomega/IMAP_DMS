@@ -87,9 +87,9 @@ def addDocument(M, conf, documents):
     title = filenames[0]
 
   readline.write_history_file(historyPathTitle)
+  readline.clear_history()
 
   #Read Tags
-  readline.clear_history()
   readline.parse_and_bind("tab: complete")
   readline.set_completer(tools.getCompleter(tags))
 
@@ -102,10 +102,12 @@ def addDocument(M, conf, documents):
   logging.debug("Got tags '%s' from user", tags)
 
   readline.write_history_file(historyPathTags)
+  readline.clear_history()
 
   #Read Datetime
   readline.parse_and_bind("tab: None")
   formatString = conf.get('Client','date_format')
+
   today = date.today().strftime('%d.%m.%Y')
   while True:
     s = raw_input('Enter Date (format: %s, return for today): ' % (today))
@@ -173,6 +175,7 @@ It was created on '%s' on host '%s' by user '%s'.
     logging.debug('Mime Type of file %s is %s', processFile[1], mimetype)
     mimetype=mimetype[0].split('/')
 
+    #Add mime-part to message
     binpart = email.mime.nonmultipart.MIMENonMultipart(mimetype[0], mimetype[1])
     f = open(processFile[1], 'r')
     binpart.set_payload(f.read())
