@@ -89,13 +89,39 @@ you must download these sub modules after you have downloaded this repository.
 Usage
 =====
 
-   1. Create a configuration file: Have a look at the example
-      `imap_dms.cfg.example`. You can find the available configuration options
-      in the `imap_dms.defaults` file. Do not modify the defaults file but
-      instead overwrite the setting which you need in the configuration.
-   2. Run `processMails.py -v -c [configurationfile]` from the command line to
-      see if everything works as expected
-   3. Add a cronjob which runs `processMails.py -c [config]` periodically.
+Setting up
+---------
+
+You need access to an IMAP account which contains a mailbox (folder) dedicated
+to your documents. Copy the `imap_dms.cfg.example` to a new file, for example
+`imap_dms.cfg` and modify it to your needs at least providing the IMAP account.
+If you want to use another folder than "INBOX" for your documents, use the
+`check_folder` and `save_folder` options as explained in the
+`imap_dms.defaults`. 
+
+Adding New Documents
+-------------------
+
+There are two ways to add new documents.
+
+   1. _Using the `addDocuments.py` script:_ This script adds new documents to
+      your document IMAP folder and asks you three easy question: You can input
+      a title for the document (defaults to the file name), you can specify tags
+      from the document (try the tab completion) and you can input a date
+      (defaults to today). The script then directly uploads the message to your
+      IMAP folder.
+    2. _By sending an email:_You can use your favourite email program to send an
+       email to your IMAP account. If your new messages do not get delivered to
+       your document folder, you might have to move them.
+
+Processing the Documents
+----------------
+
+Now the documents in your IMAP folder need to be processed, the attachments have
+to be turned into plain text for full text searching. To do this, run
+`processMails.py -v -c [configurationfile]` from the command line to see if
+everything works as expected. If yes, add a cronjob which runs `processMails.py
+-c [config]` periodically.
 
 The script can either run on your client machine or if possible directly on the
 mail server. The later should be preferred as the documents do not have to be
@@ -116,7 +142,6 @@ Features
      language, simply send the email to `docs+languagecode@domain.tld`. For
      example for a french document use `docs+fra@domain.tld`. The language codes
      are those of the ISO 639-2 standard.
-
 
 External Libraries
 ==================
