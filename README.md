@@ -147,12 +147,12 @@ Features
 Helpful Tools
 ==============
 
-    - To backup your documents, you can use [imapsync][imsync] or
-      [offlineimap][offim]. As all data is stored in the IMAP folder, backuping
-      it up is enough.
-    - There is a helpful Mozilla Thunderbird Extension called [Header Tools
-      Lite][headtools] which can be used to later edit the subject and the date
-      of a message.
+   - To backup your documents, you can use [imapsync][imsync] or
+     [offlineimap][offim]. As all data is stored in the IMAP folder, backuping
+     it up is enough.
+   - There is a helpful Mozilla Thunderbird Extension called [Header Tools
+     Lite][headtools] which can be used to later edit the subject and the date
+     of a message.
 
    [imsync]: http://imapsync.lamiral.info/
    [offim]: http://offlineimap.org/
