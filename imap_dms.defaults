@@ -4,16 +4,22 @@
 [Folders]
 #The IMAP Folder which is checked for the messages
 check_folder = INBOX
-#The IMAP Folder where the processed messages are saved to
+
+#The IMAP Folder where the processed messages are saved to. This folder may be
+#identical to the check_folder. 
 save_folder = INBOX
 
 #The IMAP Folder where the unmodified messages are kept as backup. This can be
 #empty. In this case no backups are kept and the original messages are deleted.
+#This folder must NOT be identical to check_folder, otherwise you will end up in
+#an infinite loop.
 original_folder = Originals
 
 [Options]
 #MIME Types which should not be processed
+
 skip_contenttypes = ['text/plain']
+#
 #Filenames of the attachments which should not be processed
 skip_filenames = ['signature.asc']
 
@@ -40,8 +46,10 @@ tags_file = ~/.cache/imap_dms.tags
 #Date format for import
 date_format = %d.%m.%Y
 
-#Sender of the client Mails (does technically not play a role, simply a header)
+#Sender of the client Mails (does technically not play a role, simply a header).
+#Defaults to User@Hostname of the client computer.
 sender = 
 
 #Receiver of the client mails (does technically not play a role, simply a header)
+#Defaults to User@hostname of the server computer, aka the IMAP server.
 receiver = 
