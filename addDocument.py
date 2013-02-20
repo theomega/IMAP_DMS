@@ -68,6 +68,10 @@ def addDocument(M, conf, documents):
   f.close()
 
   #Read Title
+  historyPath = os.path.expanduser(conf.get('Client','history_file'))
+  if os.path.exists(historyPath):
+     readline.read_history_file(historyPath)
+
   readline.parse_and_bind("tab: None")
   title = unicode(raw_input('Enter Title: '), sys.stdin.encoding)
   title = title.strip()
@@ -76,6 +80,8 @@ def addDocument(M, conf, documents):
   if(len(title)==0):
     logging.debug('No title specified, taking first filename %s', filename[0])
     title = filename[0]
+
+  readline.write_history_file(historyPath)
 
   #Read Tags
   readline.parse_and_bind("tab: complete")

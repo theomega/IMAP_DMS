@@ -43,6 +43,9 @@ available_languages = ['deu', 'eng', 'fra']
 #File where the tags which are used on the server are cached locally
 tags_file = ~/.cache/imap_dms.tags
 
+#File where the history for the titles of the files are saved
+history_file = ~/.cache/image_dms.history
+
 #Date format for import
 date_format = %d.%m.%Y
 
