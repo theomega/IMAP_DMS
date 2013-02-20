@@ -3,7 +3,7 @@
 # vim:tw=80:ts=2:sw=2:colorcolumn=81:nosmartindent
 
 import logging, sys, os, os.path, imaplib, email, email.mime
-import email.mime.nonmultipart, email.charset, platform
+import email.mime.nonmultipart, email.charset, platform, argparse
 
 import tools
 
@@ -17,7 +17,6 @@ content_processors={
 
 #Defaults config
 defaultConfigFile=tools.getDefaultPath('imap_dms.defaults')
-logging.basicConfig(level=logging.DEBUG)
 
 def handle_part(conf, msg, part, tags):
   logging.debug('Found part filename=%s, type=%s', part.get_filename(),
@@ -66,29 +65,27 @@ def handle_part(conf, msg, part, tags):
     logging.error('Don\'t know how to handle this mime-type')
 
 
-def usage(name):
-  print("IMAP-DMS Version %s" % (tools.__version__))
-  print("")
-  print("Usage: %s [configuration file]" % name)
-  print("""
-IMAP-DMS downloads new messages from an IMAP folder specified in the
-configuration file. It then turns every attachment which is not plain text into
-plain text by using multiple utitilies likes pdftotext or OCR.
-
-The purpose of this script is to make documents on an IMAP server searchable
-""")
-
 def main(argv):
-  if len(argv)!=2:
-    usage(argv[0])
-    return 1
+  cmd = argparse.ArgumentParser(description='Process the documents')
+  cmd.add_argument('-c', '--config', required=True, help='configuration file')
+  cmd.add_argument('-v', '--verbose', action='store_true', default=False,
+                   help='verbose debugging output')
+  args = cmd.parse_args(argv[1:])
+
+  if(args.verbose):
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
+  logging.debug('Parsed cmd-line is %s', args)
+
 
   #Read Configuration
-  logging.debug('Parsing configuration from file %s', argv[1])
+  logging.debug('Parsing configuration from file %s', args.config)
   logging.debug('Defaults are stored in %s', defaultConfigFile)
 
   conf=tools.DMSConfigParser()
-  if(len(conf.read([defaultConfigFile, argv[1]]))!=2):
+  if(len(conf.read([defaultConfigFile, args.config]))!=2):
     logging.error('Could not read config file')
     return 1
 

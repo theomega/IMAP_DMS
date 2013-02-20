@@ -13,11 +13,6 @@ import tools
 #Defaults config
 defaultConfigFile=tools.getDefaultPath('imap_dms.defaults')
 
-#Set up the default charset for encoding the ocred text
-utf8qp=email.charset.Charset('utf-8')
-utf8qp.body_encoding=email.charset.QP
-
-
 def downloadTags(M, conf):
   logging.debug('Parsing messages in folder %s',
       conf.get('Folders','save_folder'))
@@ -204,7 +199,7 @@ def main(argv):
   cmd.add_argument('-v', '--verbose', action='store_true', default=False,
                    help='verbose debugging output')
   cmd.add_argument('filename', nargs='+', help='file to add')
-  args = cmd.parse_args()
+  args = cmd.parse_args(argv[1:])
 
   if(args.verbose):
     logging.basicConfig(level=logging.DEBUG)

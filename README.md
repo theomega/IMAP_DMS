@@ -93,9 +93,9 @@ Usage
       `imap_dms.cfg.example`. You can find the available configuration options
       in the `imap_dms.defaults` file. Do not modify the defaults file but
       instead overwrite the setting which you need in the configuration.
-   2. Run `processMails.py [configurationfile]` from the command line to see if
-      everything works as expected
-   3. Add a cronjob which runs `processMails.py` periodically.
+   2. Run `processMails.py -v -c [configurationfile]` from the command line to
+      see if everything works as expected
+   3. Add a cronjob which runs `processMails.py -c [config]` periodically.
 
 The script can either run on your client machine or if possible directly on the
 mail server. The later should be preferred as the documents do not have to be
