@@ -22,8 +22,7 @@ def downloadTags(M, conf):
   logging.debug('Parsing messages in folder %s',
       conf.get('Folders','save_folder'))
   M.select(conf.get('Folders', 'save_folder'))
-  recode, uids = M.uid('search', None, '(HEADER %s "")' %
-      conf.get('Options', 'header'))
+  recode, uids = M.uid('search', None, 'ALL')
   logging.debug('Found %d messages: %s', len(uids[0].split()), uids[0])
 
   tags = set()
@@ -61,6 +60,12 @@ def addDocument(M, conf, documents):
   filenames = [os.path.split(fp)[1] for fp in filepaths]
 
   logging.debug('Adding document %s', filepaths)
+
+  #Check if all files exist:
+  for f in filepaths:
+    if(not os.path.exists(f)):
+      logging.error("File %s does not exist, abort", f)
+      return 1
   
   tagsFile = os.path.expanduser(conf.get('Client', 'tags_file'))
   f = open(tagsFile, 'r')
@@ -68,9 +73,9 @@ def addDocument(M, conf, documents):
   f.close()
 
   #Read Title
-  historyPath = os.path.expanduser(conf.get('Client','history_file'))
-  if os.path.exists(historyPath):
-     readline.read_history_file(historyPath)
+  historyPathTitle = os.path.expanduser(conf.get('Client','history_file_title'))
+  if os.path.exists(historyPathTitle):
+     readline.read_history_file(historyPathTitle)
 
   readline.parse_and_bind("tab: None")
   title = unicode(raw_input('Enter Title: '), sys.stdin.encoding)
@@ -78,17 +83,25 @@ def addDocument(M, conf, documents):
   logging.debug("Got title '%s' from user", title)
 
   if(len(title)==0):
-    logging.debug('No title specified, taking first filename %s', filename[0])
-    title = filename[0]
+    logging.debug('No title specified, taking first filename %s', filenames[0])
+    title = filenames[0]
 
-  readline.write_history_file(historyPath)
+  readline.write_history_file(historyPathTitle)
 
   #Read Tags
+  readline.clear_history()
   readline.parse_and_bind("tab: complete")
   readline.set_completer(tools.getCompleter(tags))
+
+  historyPathTags = os.path.expanduser(conf.get('Client','history_file_tags'))
+  if os.path.exists(historyPathTags):
+     readline.read_history_file(historyPathTags)
+
   tags = unicode(raw_input('Enter Tags: '), sys.stdin.encoding)
   tags = tags.strip()
   logging.debug("Got tags '%s' from user", tags)
+
+  readline.write_history_file(historyPathTags)
 
   #Read Datetime
   readline.parse_and_bind("tab: None")
@@ -156,7 +169,9 @@ It was created on '%s' on host '%s' by user '%s'.
 
   for processFile in zip(filenames, filepaths):
     #Construct mime-type
-    mimetype=mimetypes.guess_type(processFile[1])[0].split('/')
+    mimetype=mimetypes.guess_type(processFile[1])
+    logging.debug('Mime Type of file %s is %s', processFile[1], mimetype)
+    mimetype=mimetype[0].split('/')
 
     binpart = email.mime.nonmultipart.MIMENonMultipart(mimetype[0], mimetype[1])
     f = open(processFile[1], 'r')
