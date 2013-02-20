@@ -143,6 +143,22 @@ Features
      example for a french document use `docs+fra@domain.tld`. The language codes
      are those of the ISO 639-2 standard.
 
+
+Helpful Tools
+==============
+
+    - To backup your documents, you can use [imapsync][imsync] or
+      [offlineimap][offim]. As all data is stored in the IMAP folder, backuping
+      it up is enough.
+    - There is a helpful Mozilla Thunderbird Extension called [Header Tools
+      Lite][headtools] which can be used to later edit the subject and the date
+      of a message.
+
+   [imsync]: http://imapsync.lamiral.info/
+   [offim]: http://offlineimap.org/
+   [headtools]: https://addons.mozilla.org/en-US/thunderbird/addon/header-tools-lite
+
+
 External Libraries
 ==================
 
@@ -171,3 +187,6 @@ To Do / Open Questions
    - It is not clear how portable the script is in terms of python versions and
      application versions.
    - Check if other OCR tools would be better suitable for this job.
+   - Thunderbird sometimes misses the updating of the messages which leads to
+     duplicate messages. This is an Thunderbird error, restarting Thunderbird
+     redownloads the message list and the duplicates are gone.
