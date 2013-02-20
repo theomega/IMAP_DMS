@@ -12,7 +12,6 @@ import tools
 
 #Defaults config
 defaultConfigFile=tools.getDefaultPath('imap_dms.defaults')
-logging.basicConfig(level=logging.DEBUG)
 
 #Set up the default charset for encoding the ocred text
 utf8qp=email.charset.Charset('utf-8')
@@ -57,11 +56,11 @@ def updateTags(M, conf):
   f.close()
   logging.debug('Finished saving tags')
 
-def addDocument(M, conf, document):
-  filepath = os.path.realpath(document)
-  filename = os.path.split(filepath)[1]
+def addDocument(M, conf, documents):
+  filepaths = map(os.path.realpath, documents)
+  filenames = [os.path.split(fp)[1] for fp in filepaths]
 
-  logging.debug('Adding document %s', filepath)
+  logging.debug('Adding document %s', filepaths)
   
   tagsFile = os.path.expanduser(conf.get('Client', 'tags_file'))
   f = open(tagsFile, 'r')
@@ -75,8 +74,8 @@ def addDocument(M, conf, document):
   logging.debug("Got title '%s' from user", title)
 
   if(len(title)==0):
-    logging.debug('No title specified, taking filename %s', filename)
-    title = filename
+    logging.debug('No title specified, taking first filename %s', filename[0])
+    title = filename[0]
 
   #Read Tags
   readline.parse_and_bind("tab: complete")
@@ -126,10 +125,6 @@ def addDocument(M, conf, document):
   else:
     receiver = "%s@%s" % (conf.get('Server', 'user'), conf.get('Server','host'))
   logging.debug("Receiver of the mail will be '%s'", receiver)
-
-  #Construct mime-type
-  mimetype=mimetypes.guess_type(filepath)[0].split('/')
-
   msg = email.mime.multipart.MIMEMultipart()
   msg['Subject'] = unicode(subject)
   msg['From'] = unicode(sender)
@@ -139,32 +134,42 @@ def addDocument(M, conf, document):
   msg['User-Agent'] = 'IMAP-DMS version %s' % (tools.__version__)
 
   #Add Text part (quite useless, for some mailclients necessary)
-  textPart = tools.MIMEUTF8QPText(u"""This Mail contains the file %s as
-  attachment""" % (filename))
+  text=u"""
+This Mail contains the following files:
+%s
+It was created on '%s' on host '%s' by user '%s'.
+""" % (
+  ''.join(['- '+l+'\n' for l in filenames]),
+  str(datetime.now()),
+  platform.node(),
+  getpass.getuser()
+  )
+
+  textPart = tools.MIMEUTF8QPText(text)
   msg.attach(textPart)
 
-  binpart = email.mime.nonmultipart.MIMENonMultipart(mimetype[0], mimetype[1])
-  f = open(filepath, 'r')
-  binpart.set_payload(f.read())
-  email.encoders.encode_base64(binpart)
-  f.close()
-  binpart.add_header('Content-Disposition', 'attachment', filename=('utf-8',
-    '', filename.encode('utf-8')))
-  msg.attach(binpart)
+  for processFile in zip(filenames, filepaths):
+    #Construct mime-type
+    mimetype=mimetypes.guess_type(processFile[1])[0].split('/')
 
-
-  print()
-  print()
-  print(msg.as_string())
+    binpart = email.mime.nonmultipart.MIMENonMultipart(mimetype[0], mimetype[1])
+    f = open(processFile[1], 'r')
+    binpart.set_payload(f.read())
+    email.encoders.encode_base64(binpart)
+    f.close()
+    binpart.add_header('Content-Disposition', 'attachment', filename=('utf-8',
+      '', processFile[0].encode('utf-8')))
+    msg.attach(binpart)
 
   imaptimestamp=imaplib.Time2Internaldate(
       timestamp.replace(tzinfo=tools.Local).timetuple())
+  logging.info('Uploading message')
   logging.debug('Saving message to IMAP Folder %s with timestmap %s',
       conf.get('Folders','check_folder'), imaptimestamp)
 
   M.append(conf.get('Folders', 'check_folder'), "()", imaptimestamp,
       msg.as_string())
-
+  logging.info('Finished uploading')
 
 def main(argv):
   cmd = argparse.ArgumentParser(description='Add a new document')
@@ -172,8 +177,17 @@ def main(argv):
                                help='use local stored tags, do not download')
 
   cmd.add_argument('-c', '--config', required=True, help='configuration file')
-  cmd.add_argument('filename', help='file to add')
+  cmd.add_argument('-v', '--verbose', action='store_true', default=False,
+                   help='verbose debugging output')
+  cmd.add_argument('filename', nargs='+', help='file to add')
   args = cmd.parse_args()
+
+  if(args.verbose):
+    logging.basicConfig(level=logging.DEBUG)
+  else:
+    logging.basicConfig(level=logging.INFO)
+
+  logging.debug('Parsed cmd-line is %s', args)
   
   #Read Configuration
   logging.debug('Parsing configuration from file %s', args.config)
@@ -197,7 +211,8 @@ def main(argv):
   if(not args.localtags):
     updateTags(M, conf) 
 
-  addDocument(M, conf, unicode(args.filename, locale.getpreferredencoding()))
+  addDocument(M, conf, [unicode(f, locale.getpreferredencoding()) for f in
+    args.filename])
 
   logging.debug('Closing folder and logging out')
   M.logout()
