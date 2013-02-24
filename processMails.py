@@ -109,6 +109,11 @@ def main(argv):
   for uid in map(int, uids[0].split()):
     logging.debug('Fetching message ID %d', uid)
     recode, data = M.uid('fetch', uid, '(RFC822)')
+    
+    if(recode!='OK'):
+      logging.info('UID %d is not existing (anymore), skipping', uid)
+      continue
+
     msg = email.message_from_string(data[0][1])
     msgTimestamp = email.utils.parsedate(msg['Date'])
 
