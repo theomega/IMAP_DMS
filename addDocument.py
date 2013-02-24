@@ -54,10 +54,11 @@ def addDocument(M, conf, documents):
   filepaths = map(os.path.realpath, documents)
   filenames = [os.path.split(fp)[1] for fp in filepaths]
 
-  logging.debug('Adding document %s', filepaths)
+  logging.info('Adding the following documents:')
 
   #Check if all files exist:
   for f in filepaths:
+    logging.info('  %s', f)
     if(not os.path.exists(f)):
       logging.error("File %s does not exist, abort", f)
       return 1
