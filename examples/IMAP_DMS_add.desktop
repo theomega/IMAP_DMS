@@ -1,0 +1,15 @@
+#Copy this file to ~/.local/share/applications. This makes a new application
+#available for pdf applications in applications supporting desktop-files
+#(nautilus for example). Select a PDF file and open it with the 'IMAP DMS'
+#entry. This opens a new terminal where you can enter the details for the file
+
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=IMAP DMS - Add File
+Comment=Add a new file to the IMAP DMS
+Terminal=true
+Exec=addDoc -l %u
+Categories=Application;Utility;
+MimeType=application/pdf;
+

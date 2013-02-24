@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#Use this script to add a document (in a file) to your repository. Customize the
+#variables to make them fit your needs.
+
+PYPATH="~/Development/IMAP_DMS/addDocument.py"
+CONFPATH="~/Development/IMAP_DMS/imap_dms.cfg"
+
+$PYPATH $CONFPATH "$@"

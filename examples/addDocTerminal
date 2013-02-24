@@ -1,0 +1,7 @@
+#!/bin/bash
+
+#Add this script together with the `addDoc` script to your PATH. You can then
+#select the `addDocTerminal` as program when opening (pdf-)files to add them to
+#you document repository
+
+gnome-terminal -x bash -c "addDoc \"$1\"; read line"
