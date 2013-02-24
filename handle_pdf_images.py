@@ -25,7 +25,7 @@ def process_pdf(content, noOCR, language):
     logging.debug("Extracing page numbers")
 
     pageNos = map(int,
-        str(identify("-format", "%p ", "-", _in=content,_in_bufsize=10000)).\
+        str(identify("-format", "%p ", "pdf:-", _in=content,_in_bufsize=10000)).\
             strip().split(' '))
     logging.debug("Found pages: %s", pageNos)
     
@@ -36,7 +36,7 @@ def process_pdf(content, noOCR, language):
       tmpFolder = tempfile.mkdtemp(prefix='imap-dms-ocr-tmp')
 
       logging.debug("Converting page to image in tmpfolder %s", tmpFolder)
-      convert(convert_options, "-[%d]" % (pageNo), tmpFolder+"/out.png",
+      convert(convert_options, "pdf:-[%d]" % (pageNo), tmpFolder+"/out.png",
            _in=content, _in_bufsize=10000)
 
       logging.debug("Running tesseract with language %s on file %s",
