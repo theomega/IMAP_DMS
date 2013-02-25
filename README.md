@@ -110,7 +110,7 @@ There are two ways to add new documents.
       from the document (try the tab completion) and you can input a date
       (defaults to today). The script then directly uploads the message to your
       IMAP folder.
-    2. _By sending an email:_You can use your favourite email program to send an
+   2. _By sending an email:_ You can use your favourite email program to send an
        email to your IMAP account. If your new messages do not get delivered to
        your document folder, you might have to move them.
 
