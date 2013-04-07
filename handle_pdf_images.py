@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*- 
 # vim:tw=80:ts=2:sw=2:colorcolumn=81:nosmartindent
 
-import sys, logging, tempfile, shutil
+import sys, logging, tempfile, shutil, os
 
 #TODO: Remove this hack!!!
-sys.path.append('sh')
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sh'))
 
 convert_options=["-background","white","-flatten","+matte","-density","300x300"]
 
