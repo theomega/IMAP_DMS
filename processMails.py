@@ -113,6 +113,9 @@ def main(argv):
     if(recode!='OK'):
       logging.info('UID %d is not existing (anymore), skipping', uid)
       continue
+    if(len(data)==0 or len(data[0])==0):
+      logging.info('The mail message UID %d is not valid, skipping', uid)
+      continue
 
     msg = email.message_from_string(data[0][1])
     msgTimestamp = email.utils.parsedate(msg['Date'])
@@ -137,7 +140,8 @@ def main(argv):
     #Save the new message
     logging.debug('Appending new message to %s with flags %s',
         conf.get('Folders', 'save_folder'), conf.get('Options', 'flags'))
-    logging.debug('Original message has date %s', msgTimestamp)
+    logging.debug('Original message has date %s (Date header: "%s")',
+        msgTimestamp, msg['Date'])
 
     M.append(conf.get('Folders', 'save_folder'), "(%s)" % str.join(" ",
       conf.get('Options', 'flags')), imaplib.Time2Internaldate(msgTimestamp),
