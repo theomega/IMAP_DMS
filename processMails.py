@@ -113,7 +113,7 @@ def main(argv):
     if(recode!='OK'):
       logging.info('UID %d is not existing (anymore), skipping', uid)
       continue
-    if(len(data)==0 or len(data[0])==0):
+    if(data is None or len(data)==0 or len(data[0])==0):
       logging.info('The mail message UID %d is not valid, skipping', uid)
       continue
 
