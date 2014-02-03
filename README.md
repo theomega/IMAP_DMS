@@ -66,7 +66,8 @@ You can also use an own account for this. In this way, you can add new documents
 easily by simply sending a mail to this account.
 
 You need python installed, I used version 2.7. You also need [ImageMagick][im]
-and [Tesseract][tess] installed in your PATH for the OCR jobs.
+and [Tesseract][tess] installed in your PATH for the OCR jobs. Additional required
+packages are `poppler-utils` (for `pdftotext`).
 
    [im]: http://www.imagemagick.org
    [tess]: http://code.google.com/p/tesseract-ocr/
