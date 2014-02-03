@@ -35,6 +35,7 @@ def handle_part(conf, msg, part, tags):
     logging.debug("Running processor %s", str(f))
     
     noOcr = 'noocr' in tags
+    nopdftext = 'nopdftext' in tags
     despeckle = 'despeckle' in tags
     
     #Check language settings
@@ -51,7 +52,7 @@ def handle_part(conf, msg, part, tags):
       language=conf.get('Options', 'default_language')
 
     newname = '%s.%s' % (part.get_filename(), 'txt')
-    newcontent = f(part.get_payload(decode=True), noOCR=noOcr, language=language, despeckle=despeckle)
+    newcontent = f(part.get_payload(decode=True), noOCR=noOcr, language=language, despeckle=despeckle, noPDFText=nopdftext)
 
     if newcontent is not None:
       logging.debug("Recieved %d chars, saving to mail", len(newcontent))

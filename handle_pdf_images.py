@@ -10,12 +10,15 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sh'))
 convert_options=["-background","white","-flatten","+matte","-density","300x300"]
 convert_options_despeckle=["-background","white","-flatten","+matte","-density","600x600","-median","6"]
 
-def process_pdf(content, noOCR, language, despeckle):
-  from sh import pdftotext
-  
-  logging.debug("Extracting pdf contents using pdftotext")
-  pdfText = unicode(pdftotext('-', '-', _in=content, _in_bufsize=10000))
-  logging.debug("Extracted %d chars from the text", len(pdfText))
+def process_pdf(content, language, noOCR=False, noPDFText=False, despeckle=False):
+  if noPDFText:
+    logging.debug("pdftotext disabled")
+    pdfText = ""
+  else:
+    from sh import pdftotext
+    logging.debug("Extracting pdf contents using pdftotext")
+    pdfText = unicode(pdftotext('-', '-', _in=content, _in_bufsize=10000))
+    logging.debug("Extracted %d chars from the text", len(pdfText))
 
   if noOCR:
     logging.debug("OCR disabled, returning only pdf text")
