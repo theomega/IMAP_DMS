@@ -8,8 +8,9 @@ import sys, logging, tempfile, shutil, os
 sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sh'))
 
 convert_options=["-background","white","-flatten","+matte","-density","300x300"]
+convert_options_despeckle=["-background","white","-flatten","+matte","-density","600x600","-median","6"]
 
-def process_pdf(content, noOCR, language):
+def process_pdf(content, noOCR, language, despeckle):
   from sh import pdftotext
   
   logging.debug("Extracting pdf contents using pdftotext")
@@ -35,8 +36,9 @@ def process_pdf(content, noOCR, language):
 
       tmpFolder = tempfile.mkdtemp(prefix='imap-dms-ocr-tmp')
 
-      logging.debug("Converting page to image in tmpfolder %s", tmpFolder)
-      convert(convert_options, "pdf:-[%d]" % (pageNo), tmpFolder+"/out.png",
+      co = convert_options if not despeckle else convert_options_despeckle
+      logging.debug("Converting page to image in tmpfolder %s with options %s", tmpFolder, co)
+      convert(co, "pdf:-[%d]" % (pageNo), tmpFolder+"/out.png",
            _in=content, _in_bufsize=10000)
 
       logging.debug("Running tesseract with language %s on file %s",
@@ -60,7 +62,7 @@ def process_pdf(content, noOCR, language):
   else:
     return pdfText
 
-def process_image(content, noOCR, language):
+def process_image(content, noOCR, language, despeckle):
   if noOCR:
     logging.error("OCR disabled, no text available")
     return None
