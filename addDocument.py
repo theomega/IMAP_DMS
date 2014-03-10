@@ -168,6 +168,10 @@ It was created on '%s' on host '%s' by user '%s'.
   for processFile in zip(filenames, filepaths):
     #Construct mime-type
     mimetype=mimetypes.guess_type(processFile[1])
+    if(mimetype is None or mimetype[0] is None):
+      logging.error("Could not get mime-type for '%s', abort", processFile[1])
+      return 1
+
     logging.debug('Mime Type of file %s is %s', processFile[1], mimetype)
     mimetype=mimetype[0].split('/')
 
