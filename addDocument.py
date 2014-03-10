@@ -235,11 +235,13 @@ def main(argv):
   if(not args.localtags):
     updateTags(M, conf) 
 
-  addDocument(M, conf, [unicode(f, locale.getpreferredencoding()) for f in
+  result = addDocument(M, conf, [unicode(f, locale.getpreferredencoding()) for f in
     args.filename])
 
   logging.debug('Closing folder and logging out')
   M.logout()
+
+  return result
 
 if __name__ == '__main__':
   sys.exit(main(sys.argv))
