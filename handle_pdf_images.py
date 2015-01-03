@@ -65,7 +65,7 @@ def process_pdf(content, language, noOCR=False, noPDFText=False, despeckle=False
   else:
     return pdfText
 
-def process_image(content, noOCR, language, despeckle):
+def process_image(content, language, noOCR=False, despeckle=False):
   if noOCR:
     logging.error("OCR disabled, no text available")
     return None
@@ -108,9 +108,9 @@ def main(argv=None):
 
   f = open(argv[2], "rb")
   if(argv[1]=='pdf'):
-    print(process_pdf(f.read(), int(argv[3])==1, argv[4]))
+    print(process_pdf(f.read(), argv[4], int(argv[3])==1))
   elif(argv[1]=='image'):
-    print(process_image(f.read(), int(argv[3])==1, argv[4]))
+    print(process_image(f.read(), argv[4], int(argv[3])==1))
   else:
     print('Unkown type %s', argv[1])
     return 1
