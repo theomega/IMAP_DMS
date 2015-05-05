@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 # vim:tw=80:ts=2:sw=2:colorcolumn=81:nosmartindent
 
 import logging, sys, os, os.path, imaplib, email, email.mime, email.header
@@ -28,12 +28,12 @@ def downloadTags(M, conf):
     msg = email.message_from_string(data[0][1])
     subject = tools.decodeHeader(msg['Subject'])
     logging.debug('Subject is %s', subject)
-    
+
     mtags = re.findall('\[([a-zA-Z0-9 ]+)\]', subject)
     tags.update(mtags)
 
   M.close()
- 
+
   logging.debug('Found Tags: %s', tags)
 
   return tags
@@ -62,7 +62,7 @@ def addDocument(M, conf, documents):
     if(not os.path.exists(f)):
       logging.error("File %s does not exist, abort", f)
       return 1
-  
+
   tagsFile = os.path.expanduser(conf.get('Client', 'tags_file'))
   f = open(tagsFile, 'r')
   tags = [x.strip() for x in f.readlines()]
@@ -121,7 +121,7 @@ def addDocument(M, conf, documents):
 
   #timestamp = timestamp.replace(tzinfo=tools.Local)
   logging.debug("Found date %s", timestamp)
-    
+
   #Construct subject of the mail
   if(len(tags)>0):
     subject=title+" "+''.join(['['+t.strip()+']' for t in tags.split(' ')])
@@ -212,7 +212,7 @@ def main(argv):
     logging.basicConfig(level=logging.INFO)
 
   logging.debug('Parsed cmd-line is %s', args)
-  
+
   #Read Configuration
   logging.debug('Parsing configuration from file %s', args.config)
   logging.debug('Defaults are stored in %s', defaultConfigFile)
@@ -233,7 +233,7 @@ def main(argv):
   M.login(conf.get('Server', 'user'),conf.get('Server', 'password'))
 
   if(not args.localtags):
-    updateTags(M, conf) 
+    updateTags(M, conf)
 
   result = addDocument(M, conf, [unicode(f, locale.getpreferredencoding()) for f in
     args.filename])
