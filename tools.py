@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 # vim:tw=80:ts=2:sw=2:colorcolumn=81:nosmartindent
 
 from ConfigParser import ConfigParser
@@ -39,7 +39,7 @@ class MIMEUTF8QPText(email.mime.nonmultipart.MIMENonMultipart):
     utf8qp=email.charset.Charset('utf-8')
     utf8qp.body_encoding=email.charset.QP
 
-    self.set_payload(payload, charset=utf8qp) 
+    self.set_payload(payload, charset=utf8qp)
 
 def getCompleter(tags):
   logging.debug('Returning Completer for tags %s', tags)
