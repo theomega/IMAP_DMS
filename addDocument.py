@@ -64,9 +64,12 @@ def addDocument(M, conf, documents):
       return 1
 
   tagsFile = os.path.expanduser(conf.get('Client', 'tags_file'))
-  f = open(tagsFile, 'r')
-  tags = [x.strip() for x in f.readlines()]
-  f.close()
+  if os.path.isfile(tagsFile):
+    f = open(tagsFile, 'r')
+    tags = [x.strip() for x in f.readlines()]
+    f.close()
+  else:
+    tags = []
 
   #Read Title
   historyPathTitle = os.path.expanduser(conf.get('Client','history_file_title'))
