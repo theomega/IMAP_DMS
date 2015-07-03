@@ -7,6 +7,7 @@ import email.mime.nonmultipart, email.mime.multipart, email.charset
 import email.parser, platform, re, email.mime.text, email.encoders, mimetypes
 import argparse, readline, getpass, locale
 from datetime import date, datetime, time
+import itertools
 
 import tools
 
@@ -17,22 +18,13 @@ def downloadTags(M, conf):
   logging.debug('Parsing messages in folder %s',
       conf.get('Folders','save_folder'))
   M.select(conf.get('Folders', 'save_folder'))
-  recode, uids = M.uid('search', None, 'ALL')
-  logging.debug('Found %d messages: %s', len(uids[0].split()), uids[0])
 
-  tags = set()
-
-  for uid in map(int, uids[0].split()):
-    logging.debug('Fetching message ID %d', uid)
-    recode, data = M.uid('fetch', uid, '(BODY[HEADER])')
-    msg = email.message_from_string(data[0][1])
-    subject = tools.decodeHeader(msg['Subject'])
-    logging.debug('Subject is %s', subject)
-
-    mtags = re.findall('\[([a-zA-Z0-9 ]+)\]', subject)
-    tags.update(mtags)
-
-  M.close()
+  recode, subjects = M.uid('fetch', '1:*', '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+  subjects = map(lambda x: tools.decodeHeader(x[1].replace("Subject:",
+    "").strip()), subjects[0::2])
+  logging.debug("Found %s", subjects)
+  tags = map(lambda x: re.findall('\[([a-zA-Z0-9 ]+)\]', x), subjects)
+  tags = set(itertools.chain.from_iterable(tags))
 
   logging.debug('Found Tags: %s', tags)
 
